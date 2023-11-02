@@ -11,9 +11,9 @@ public class ChessGUI
    JPanel mainPanel;
    JLabel instructions;
  
-   public ChessGUI()
+   public ChessGUI(ChessBoard newBoard)
    {
-      ChessBoard board = new ChessBoard();
+      ChessBoard board = newBoard;
     
       this.mainFrame = new JFrame("Chess");
       this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

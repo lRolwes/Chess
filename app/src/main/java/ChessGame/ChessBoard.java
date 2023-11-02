@@ -4,13 +4,17 @@ import java.awt.event.*;
 import javax.swing.*;
 import ChessGame.ChessSquare;
 
+
 public class ChessBoard extends JPanel{
-    ChessSquare[][] board = new ChessSquare[8][8];
+    protected ChessSquare[][] board = new ChessSquare[8][8];
+    protected int phase = 1;
+    protected char cacheVal = 'k';
+
     public ChessBoard(){
         int row = 0;
         int col = 0;
         for(int i = 0; i<64; i++){
-            this.board[row][col] = new ChessSquare();
+            this.board[row][col] = new ChessSquare(this);
             if((row+col)%2==1){
                 this.board[row][col].setBackground(new Color(210, 125, 45));
             }
@@ -59,5 +63,49 @@ public class ChessBoard extends JPanel{
     }
     public ChessSquare getSquare(int row, int col){
         return board[row][col];
+    }
+    public void setCache(char val){
+        this.cacheVal = val;
+    }
+    public char getCacheVal(){
+        return this.cacheVal;
+    }
+    //set only the current teams pieces buttons to enabled at start of turn 
+    public void enableTeam(char team){
+        int x = 0;
+        int y = 0; 
+        while(y<8){
+            if(this.board[x][y].getTeam()!=team){
+                this.board[x][y].setEnabled(false);
+            }
+            else{
+                this.board[x][y].setEnabled(true);
+            }
+            if(x==7){
+                x=0;
+                y++;
+            }
+            else{
+                x++;
+            }
+        }
+    }
+    public void disableAll(){
+        int x = 0;
+        int y = 0; 
+        while(y<8){
+            this.board[x][y].setEnabled(false);
+        }
+    }
+    public void setPhase(){
+        if(this.phase ==1){
+            this.phase = 2;
+        }
+        else{
+            this.phase = 1;
+        }
+    }
+    public int getPhase(){
+        return this.phase;
     }
 }
