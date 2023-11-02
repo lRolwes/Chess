@@ -5,43 +5,42 @@ public class ChessBoard extends JPanel{
         int row = 0;
         int col = 0;
         for(int i = 0; i<64; i++){
-            board[row][col] = new ChessSquare();
-            board[row][col].setPreferredSize(new Dimension(50,50));
+            this.board[row][col] = new ChessSquare();
             if((row+col)%2==1){
-                board[row][col].setBackground(new Color(210, 125, 45));
+                this.board[row][col].setBackground(new Color(210, 125, 45));
             }
             else{
-               board[row][col].setBackground(new Color(193, 154, 107));
+               this.board[row][col].setBackground(new Color(193, 154, 107));
             }
             if(row==1 || row==6){
-                board[row][col].setText("P");
+                this.board[row][col].setVal('P');
             }
             if(row==0||row==7){
                 if(col==0||col==7){
-                    board[row][col].setText("R");
+                    this.board[row][col].setVal('R');
                 }
                 else if(col==1||col==6){
-                    board[row][col].setText("K");
+                    this.board[row][col].setVal('K');
                 }
                 else if(col==2||col==5){
-                    board[row][col].setText("B");
+                    this.board[row][col].setVal('B');
                 }
                 else{
                     if((row+col)%2==1){
-                        board[row][col].setText("K");
+                        this.board[row][col].setVal('K');
                     }
                     else{
-                        board[row][col].setText("Q");
+                        this.board[row][col].setText("Q");
                     }
                 }
             }
-            if(row>4){
-                board[row][col].setForeground(Color.WHITE);
+            if(row<=1){
+                this.board[row][col].setTeam('w');
             }
-            else{
-                board[row][col].setForeground(Color.BLACK);
+            else if(row>5){
+                this.board[row][col].setTeam('b');
             }
-            if(col ==7){
+            if(col == 7){
                 col = 0;
                 row++;
             }
@@ -49,6 +48,7 @@ public class ChessBoard extends JPanel{
                 col++;
             }
          }
+         setLayout(new GridLayout(8, 8));
     }
     public ChessSquare getSquare(int row, int col){
         return board[row][col];

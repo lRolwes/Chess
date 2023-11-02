@@ -10,57 +10,8 @@ public class ChessGUI
  
    public ChessGUI()
    {
-    JButton[] squares = new JButton[64];
-    ChessBoard board = new ChessBoard();
-    int row = 0;
-    int col = 0;
-    for(int i = 0; i<64; i++){
-        board.getSquare(row, col) = new JButton();
-        board.getSquare(row, col).setPreferredSize(new Dimension(50,50));
-        if((row+col)%2==1){
-            board.getSquare(row, col).setBackground(new Color(210, 125, 45));
-        }
-        else{
-            board.getSquare(row, col).setBackground(new Color(193, 154, 107));
-        }
-        if(row==1 || row==6){
-            board.getSquare(row, col).setText("P");
-        }
-        if(row==0||row==7){
-            if(col==0||col==7){
-                board.getSquare(row, col).setText("R");
-            }
-            else if(col==1||col==6){
-                board.getSquare(row, col).setText("K");
-            }
-            else if(col==2||col==5){
-                board.getSquare(row, col).setText("B");
-            }
-            else{
-                if((row+col)%2==1){
-                    board.getSquare(row, col).setText("K");
-                }
-                else{
-                    board.getSquare(row, col).setText("Q");
-                }
-            }
-        }
-        if(row>4){
-            board.getSquare(row, col).setForeground(Color.WHITE);
-        }
-        else{
-            board.getSquare(row, col).setForeground(Color.BLACK);
-        }
-        if(col ==7){
-            col = 0;
-            row++;
-        }
-        else{
-            col++;
-        }
-    }
-    board.setLayout(new GridLayout(8, 8));
-
+      ChessBoard board = new ChessBoard();
+    
       this.mainFrame = new JFrame("Chess");
       this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -88,10 +39,4 @@ public class ChessGUI
       this.mainFrame.pack();
       this.mainFrame.setVisible(true);
    }
-    public static void main(String[] args){
-        ChessGUI chess = new ChessGUI();
-    }
-
-
-
 }
