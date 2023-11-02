@@ -5,25 +5,28 @@ import java.awt.event.*;
 import javax.swing.*;
 import ChessGame.ChessBoard;
 
-public class ChessGUI 
+public class ChessGUI implements GraveObserver
 {
    JFrame mainFrame;
    JPanel mainPanel;
+   JPanel graveYard;
    JLabel instructions;
+
  
-   public ChessGUI(ChessBoard newBoard)
+   public ChessGUI(ChessBoard newBoard) 
    {
       ChessBoard board = newBoard;
-    
+      board.registerGraveYard(this);
       this.mainFrame = new JFrame("Chess");
       this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       this.mainPanel = new JPanel();
-      JPanel secPanel = new JPanel();
-      secPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-      secPanel.setPreferredSize(new Dimension(100,300));
-      JLabel deadPieces = new JLabel("Graveyard");
-      secPanel.add(deadPieces);
+      this.graveYard = new JPanel();
+      this.graveYard.setBorder(BorderFactory.createLineBorder(Color.black));
+      this.graveYard.setPreferredSize(new Dimension(100,50));
+      JLabel graveYardTitle = new JLabel("Graveyard: ");
+      this.graveYard.add(graveYardTitle);
+      this.graveYard.setBackground(new Color(229, 170, 112));
 
 
       // set the background color of the panel that contains everything
@@ -37,9 +40,18 @@ public class ChessGUI
       this.instructions.setAlignmentX(Component.CENTER_ALIGNMENT);
       this.mainPanel.add(instructions);
       this.mainPanel.add(board);
-      this.mainPanel.add(secPanel);
+      this.mainPanel.add(this.graveYard);
       this.mainFrame.add(mainPanel);
       this.mainFrame.pack();
       this.mainFrame.setVisible(true);
+   }
+   public void addToGrave(char piece, char team){
+    JLabel grave = new JLabel(String.valueOf(piece));
+    if(team=='w')
+        grave.setForeground(Color.WHITE);
+    else
+        grave.setForeground(Color.BLACK);
+    this.graveYard.add(grave);
+
    }
 }

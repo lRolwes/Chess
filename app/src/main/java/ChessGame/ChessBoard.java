@@ -12,6 +12,7 @@ public class ChessBoard extends JPanel{
     protected char cacheVal = 'k';
     protected char cacheTeam = 'w';
     private ArrayList<Observer> observers= new ArrayList<Observer>();
+    private GraveObserver graveyard;
 
 
     public ChessBoard(){
@@ -33,7 +34,7 @@ public class ChessBoard extends JPanel{
                     this.board[row][col].setVal('R');
                 }
                 else if(col==1||col==6){
-                    this.board[row][col].setVal('K');
+                    this.board[row][col].setVal('N');
                 }
                 else if(col==2||col==5){
                     this.board[row][col].setVal('B');
@@ -64,6 +65,10 @@ public class ChessBoard extends JPanel{
             
          }
          setLayout(new GridLayout(8, 8));
+    }
+
+    public void registerGraveYard(GraveObserver obs){
+        this.graveyard = obs;
     }
     
     public void alertObservers(){
@@ -166,6 +171,7 @@ public class ChessBoard extends JPanel{
          //if a piece was killed add it to the graveyard
         if(square.hasPiece()){
             //add this piece to the graveyard
+            this.graveyard.addToGrave(square.getVal(), square.getTeam());
         }
 
         //swap this piece for piece of square that took turn
