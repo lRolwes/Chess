@@ -1,4 +1,9 @@
 package ChessGame;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import ChessGame.ChessSquare;
+
 public class ChessBoard extends JPanel{
     ChessSquare[][] board = new ChessSquare[8][8];
     public ChessBoard(){
@@ -40,6 +45,7 @@ public class ChessBoard extends JPanel{
             else if(row>5){
                 this.board[row][col].setTeam('b');
             }
+            this.add(this.board[row][col]);
             if(col == 7){
                 col = 0;
                 row++;
@@ -47,6 +53,7 @@ public class ChessBoard extends JPanel{
             else{
                 col++;
             }
+            
          }
          setLayout(new GridLayout(8, 8));
     }

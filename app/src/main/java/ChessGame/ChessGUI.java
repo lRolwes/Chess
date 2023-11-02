@@ -1,6 +1,9 @@
+
+package ChessGame;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import ChessGame.ChessBoard;
 
 public class ChessGUI 
 {
