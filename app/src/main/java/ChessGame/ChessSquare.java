@@ -1,11 +1,16 @@
 package ChessGame; 
 public class ChessSquare extend JButton{
-    public ChessPiece myPiece = new ChessPiece("e");
-    public setPiece(ChessPiece piece){
+    public char myPiece = 'e';
+    public char team = 'w';
+
+    public setPiece(char piece){
         this.myPiece = piece;
     }
+    public setTeam(char newTeam){
+        team = newTeam;
+    }
     public hasPiece(){
-        if(this.myPiece.getVal() == 'e'){
+        if(this.myPiece == 'e'){
             return false;
         }
         else return true;
