@@ -9,17 +9,31 @@ public class ChessSquare extends JButton implements ActionListener{
     public char myPiece = 'e';
     public char team = 'w';
     private ChessBoard myBoard;
-    private ArrayList<Observer> observers= new ArrayList<Observer>();
+    private int row;
+    private int col;
 
-    public ChessSquare(ChessBoard board){
+    public ChessSquare(ChessBoard board, int row, int col){
         this.setPreferredSize(new Dimension(50,50));
         this.myBoard = board;
         this.addActionListener(this);
+        this.row = row;
+        this.col = col;
+    }
+
+    public int getRow(){
+        return this.row;
+    }
+
+    public int getCol(){
+        return this.col;
     }
 
     public void setVal(char piece){
         this.myPiece = piece;
-        this.setText(String.valueOf(this.myPiece));
+        if(piece!='e')
+            this.setText(String.valueOf(this.myPiece));
+        else
+            this.setText(" ");
     }
 
     public void setTeam(char newTeam){
@@ -43,39 +57,23 @@ public class ChessSquare extends JButton implements ActionListener{
         return team;
     }
 
-    public void alertObservers(){
-        for(Observer obs : observers){
-            obs.update();
-        }
+    public char getVal(){
+        return myPiece;
     }
 
-    public void register(Observer obs){
-        observers.add(obs);
-    }
 
     @Override
     public void actionPerformed(ActionEvent event)
     {   
+        System.out.println("performing action");
         //event is moving away from this square
         if(this.myBoard.getPhase()==1){
-            this.myBoard.disableAll();
-            //enable possible target squares based on this ones value
-            //set the phase of the board to 2
-            this.myBoard.setPhase();
-            //store the value of this square in the cache 
-            this.myBoard.setCache(this.myPiece);
+            System.out.println("phase is 1");
+            this.myBoard.move(this);
          }
          //event is moving to this square
          else if(this.myBoard.getPhase()==2){
-            //if a piece was killed add it to the graveyard
-            if(hasPiece()){
-                //add this piece to the graveyard
-            }
-            //swap this piece for piece of square that took turn
-            this.setVal(this.myBoard.getCacheVal());
-            //set phase of the board to 1
-            this.myBoard.setPhase();
-            alertObservers();
+           this.myBoard.moveTo(this);
          }
     }
 }

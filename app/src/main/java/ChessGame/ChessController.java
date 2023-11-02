@@ -12,19 +12,20 @@ public class ChessController implements Observer{
 
     public ChessController(ChessBoard newBoard){
         this.board = newBoard;
+        this.board.register(this);
         this.myGUI = new ChessGUI(board);
-        this.turn = 'w';
+        this.turn = 'b';
         takeTurn();
     }
 
     
     private void takeTurn(){
-        this.board.enableTeam(turn);
         if(turn == 'w'){
                 turn = 'b';
             }
             else{
                 turn = 'w';
             }
+        this.board.enableTeam(turn);
     }
 }

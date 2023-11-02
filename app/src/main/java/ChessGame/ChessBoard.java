@@ -3,18 +3,22 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import ChessGame.ChessSquare;
+import java.util.*;
 
 
 public class ChessBoard extends JPanel{
     protected ChessSquare[][] board = new ChessSquare[8][8];
     protected int phase = 1;
     protected char cacheVal = 'k';
+    protected char cacheTeam = 'w';
+    private ArrayList<Observer> observers= new ArrayList<Observer>();
+
 
     public ChessBoard(){
         int row = 0;
         int col = 0;
         for(int i = 0; i<64; i++){
-            this.board[row][col] = new ChessSquare(this);
+            this.board[row][col] = new ChessSquare(this, row, col);
             if((row+col)%2==1){
                 this.board[row][col].setBackground(new Color(210, 125, 45));
             }
@@ -61,15 +65,31 @@ public class ChessBoard extends JPanel{
          }
          setLayout(new GridLayout(8, 8));
     }
+    
+    public void alertObservers(){
+        for(Observer obs : observers){
+            obs.update();
+        }
+    }
+
+    public void register(Observer obs){
+        observers.add(obs);
+    }
+
     public ChessSquare getSquare(int row, int col){
         return board[row][col];
     }
-    public void setCache(char val){
+    public void setCache(char val, char team){
         this.cacheVal = val;
+        this.cacheTeam = team;
     }
     public char getCacheVal(){
         return this.cacheVal;
     }
+    public char getCacheTeam(){
+        return this.cacheTeam;
+    }
+
     //set only the current teams pieces buttons to enabled at start of turn 
     public void enableTeam(char team){
         int x = 0;
@@ -91,10 +111,18 @@ public class ChessBoard extends JPanel{
         }
     }
     public void disableAll(){
+        System.out.println("disabling");
         int x = 0;
         int y = 0; 
         while(y<8){
             this.board[x][y].setEnabled(false);
+            if(x==7){
+                y++;
+                x=0;
+            }
+            else{
+                x++;
+            }
         }
     }
     public void setPhase(){
@@ -107,5 +135,45 @@ public class ChessBoard extends JPanel{
     }
     public int getPhase(){
         return this.phase;
+    }
+    public void move(ChessSquare square){
+        System.out.println("request to move recieved");
+        disableAll();
+        System.out.println("all disabled");
+        //enable possible target squares based on this ones value
+        //pawns can move one forward
+        if(square.getVal()=='P'){
+            System.out.println("I am a pawn");
+            if(square.getTeam()=='w'){
+                getSquare(square.getRow()+1, square.getCol()).setEnabled(true);
+                System.out.println("target enabled");
+            }
+            else{
+                getSquare(square.getRow()-1, square.getCol()).setEnabled(true);
+                System.out.println("target enabled");
+            }
+        }
+        //set the phase of the board to 2
+        setPhase();
+        System.out.println("phase is now 2");
+        //store the value of this square in the cache 
+        setCache(square.getVal(), square.getTeam());
+        System.out.println("I am cached");
+        square.setVal('e');
+        square.setTeam('e');
+    }
+    public void moveTo(ChessSquare square){
+         //if a piece was killed add it to the graveyard
+        if(square.hasPiece()){
+            //add this piece to the graveyard
+        }
+
+        //swap this piece for piece of square that took turn
+        square.setVal(getCacheVal());
+        square.setTeam(getCacheTeam());
+
+        //set phase of the board to 1
+        setPhase();
+        alertObservers();
     }
 }
