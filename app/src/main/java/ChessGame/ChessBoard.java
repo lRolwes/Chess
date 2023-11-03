@@ -150,14 +150,30 @@ public class ChessBoard extends JPanel{
         if(square.getVal()=='P'){
             System.out.println("I am a pawn");
             if(square.getTeam()=='w'){
-                getSquare(square.getRow()+1, square.getCol()).setEnabled(true);
-                System.out.println("target enabled");
+                if(!getSquare(square.getRow()+1, square.getCol()).hasPiece()){
+                    getSquare(square.getRow()+1, square.getCol()).setEnabled(true);
+                    }
+                if(getSquare(square.getRow()+1, square.getCol()+1).hasPiece()){
+                    getSquare(square.getRow()+1, square.getCol()+1).setEnabled(true);
+                }
+                if(getSquare(square.getRow()+1, square.getCol()-1).hasPiece()){
+                    getSquare(square.getRow()+1, square.getCol()-1).setEnabled(true);
+                }
+                
             }
             else{
-                getSquare(square.getRow()-1, square.getCol()).setEnabled(true);
-                System.out.println("target enabled");
+                if(!getSquare(square.getRow()-1, square.getCol()).hasPiece()){
+                    getSquare(square.getRow()-1, square.getCol()).setEnabled(true);
+                }
+                if(getSquare(square.getRow()-1, square.getCol()+1).hasPiece()){
+                    getSquare(square.getRow()-1, square.getCol()+1).setEnabled(true);
+                }
+                if(getSquare(square.getRow()-1, square.getCol()-1).hasPiece()){
+                    getSquare(square.getRow()-1, square.getCol()-1).setEnabled(true);
+                }
             }
         }
+        
         //set the phase of the board to 2
         setPhase();
         System.out.println("phase is now 2");
@@ -173,12 +189,10 @@ public class ChessBoard extends JPanel{
             //add this piece to the graveyard
             this.graveyard.addToGrave(square.getVal(), square.getTeam());
         }
-
         //swap this piece for piece of square that took turn
         square.setVal(getCacheVal());
         square.setTeam(getCacheTeam());
-
-        //set phase of the board to 1
+        //set phase of the board to 1 
         setPhase();
         alertObservers();
     }
